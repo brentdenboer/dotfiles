@@ -1,0 +1,32 @@
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt autocd extendedglob nomatch notify
+unsetopt beep
+bindkey -v
+zstyle :compinstall filename '/home/brent/.zshrc'
+autoload -Uz compinit
+compinit
+
+autoload -Uz vcs_info
+precmd() {
+  vcs_info
+}
+zstyle ':vcs_info:git:*' formats '%b '
+setopt PROMPT_SUBST
+PROMPT='%F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+
+alias vi='nvim'
+alias vim='nvim'
+alias cat='bat'
+alias reset='rm -rf **/node_modules || true && rm -rf **/dist || true && rm -rf **/.turbo || true'
+
+export PNPM_HOME="/home/brent/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+export DPRINT_INSTALL="/home/brent/.dprint"
+export PATH="$DPRINT_INSTALL/bin:$PATH"
+export EDITOR=nvim
