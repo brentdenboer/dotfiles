@@ -1,0 +1,56 @@
+#!/bin/zsh
+# Environment Variables & PATH Setup
+# ----------------------------------
+{{ if lookPath "nvim" -}}
+export EDITOR=nvim
+export VISUAL=nvim
+{{ else if lookPath "vim" -}}
+export EDITOR=vim
+export VISUAL=vim
+{{ else -}}
+export EDITOR=vi
+export VISUAL=vi
+{{ end -}}
+
+{{ if lookPath "ghostty" -}}
+export TERMINAL=ghostty
+{{ else if eq .chezmoi.os "darwin" -}}
+export TERMINAL=Terminal
+{{ else -}}
+export TERMINAL=xterm
+{{ end -}}
+
+export PNPM_HOME="{{ if eq .chezmoi.os "darwin" }}$HOME/Library/pnpm{{ else }}$HOME/.local/share/pnpm{{ end }}"
+
+# Ensure path array has unique entries
+typeset -U path
+
+# Add user bins to PATH (only if directories exist)
+user_bin_dirs=(
+  "$PNPM_HOME"
+  "$HOME/.dprint/bin"
+  {{- if eq .chezmoi.os "darwin" }}
+  "/opt/homebrew/bin"
+  "/opt/homebrew/sbin"
+  {{- end }}
+)
+
+for dir in "${user_bin_dirs[@]}"; do
+  [[ -d "$dir" ]] && path=("$dir" $path)
+done
+
+# Add standard system paths if they exist
+# Ensure these come after user bins to give user bins priority
+standard_paths=(
+  /usr/local/sbin
+  /usr/local/bin
+  /usr/sbin
+  /usr/bin
+  /sbin
+  /bin
+)
+for dir in "${standard_paths[@]}"; do
+  [[ -d "$dir" ]] && path=($path "$dir")
+done
+# Export the final PATH
+export PATH

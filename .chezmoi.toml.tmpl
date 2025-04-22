@@ -1,0 +1,18 @@
+[git]
+  autoCommit = true
+  autoPush = true
+
+[merge]
+  command = "meld"
+  args = [
+      "{{ "{{ .Destination }}" }}",
+      "{{ "{{ .Source }}" }}",
+      "{{ "{{ .Target }}" }}"
+  ]
+
+[diff]
+  command = "meld"
+  args = [
+      "{{ "{{ .Destination }}" }}",
+      "{{ "{{ .Target }}" }}"
+  ]

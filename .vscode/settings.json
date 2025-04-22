@@ -12,6 +12,10 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[toml]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
   "[shellscript]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -35,7 +39,16 @@
   "files.associations": {
     "*_zshrc": "shellscript",
     "**/run_*": "shellscript",
-    "**/executable_*": "shellscript"
+    "**/executable_*": "shellscript",
+    "*.toml.tmpl": "toml"
   },
-  "cSpell.words": ["Aquilina", "zcompile", "zdharma", "ZDHARMA"]
+  "cSpell.words": [
+    "Aquilina",
+    "ZCOMPDIR",
+    "zcompdump",
+    "ZCOMPFILE",
+    "zcompile",
+    "zdharma",
+    "ZDHARMA"
+  ]
 }

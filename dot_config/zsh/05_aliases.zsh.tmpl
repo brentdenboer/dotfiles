@@ -1,0 +1,20 @@
+# Aliases
+# -------
+alias vi='nvim'
+alias vim='nvim'
+alias cat='bat --paging=never'
+{{- if eq .chezmoi.os "darwin" }}
+alias ls='ls -G'
+alias ll='ls -alhFG'
+alias la='ls -AG'
+alias l='ls -CFG'
+{{- else }}
+alias ls='ls --color=auto'
+alias ll='ls -alhF --color=auto'
+alias la='ls -A --color=auto'
+alias l='ls -CF --color=auto'
+{{- end }}
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias reset='reset-project' # Moved alias from functions section
