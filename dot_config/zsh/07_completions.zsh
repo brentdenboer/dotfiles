@@ -51,3 +51,5 @@ if type compdef &>/dev/null; then
   }
   compdef _pnpm_completion pnpm
 fi
+
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)

@@ -29,3 +29,8 @@ reset-project() {
 
   echo "Reset finished. Removed $removed directory types."
 }
+
+# Function to update hosts file
+function loadhosts() {
+  sudo hostctl replace "$1" -f .etchosts
+}

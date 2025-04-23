@@ -1,6 +1,0 @@
-[user]
-	email = brent@brentify.nl
-	name = brentdenboer
-
-[merge]
-	tool = meld

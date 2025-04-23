@@ -3,6 +3,9 @@
 alias vi='nvim'
 alias vim='nvim'
 alias cat='bat --paging=never'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+alias dcb='docker compose build'
 {{- if eq .chezmoi.os "darwin" }}
 alias ls='ls -G'
 alias ll='ls -alhFG'
