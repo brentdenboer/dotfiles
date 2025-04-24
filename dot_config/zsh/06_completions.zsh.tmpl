@@ -1,7 +1,7 @@
 # Completion System Setup
 # -----------------------
 bindkey -v
-source /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+source {{ if eq .chezmoi.os "darwin" }}/opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh{{ else }}/usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh{{ end }} 
 
 # Source custom completion files
 # ------------------------------
