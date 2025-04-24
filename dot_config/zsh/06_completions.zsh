@@ -3,22 +3,21 @@
 bindkey -v
 source /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
-# PNPM Completion
-if type compdef &>/dev/null; then
-  _pnpm_completion() {
-    local reply
-    local si=$IFS
+# Source custom completion files
+# ------------------------------
+ZSH_COMPLETIONS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh/completions"
 
-    IFS=$'\n' reply=($(COMP_CWORD="$((CURRENT - 1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" SHELL=zsh pnpm completion-server -- "${words[@]}"))
-    IFS=$si
-
-    if [ "$reply" = "__tabtab_complete_files__" ]; then
-      _files
-    else
-      _describe 'values' reply
+# Check if the directory exists
+if [[ -d "$ZSH_COMPLETIONS_DIR" ]]; then
+  # Loop through all .zsh files in the directory and source them
+  for completion_file in "$ZSH_COMPLETIONS_DIR"/*.zsh; do
+    if [[ -f "$completion_file" ]]; then
+      source "$completion_file"
     fi
-  }
-  compdef _pnpm_completion pnpm
+  done
+  unset completion_file # Clean up the loop variable
+else
+  echo "Zsh completions directory not found: $ZSH_COMPLETIONS_DIR"
 fi
 
-[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+unset ZSH_COMPLETIONS_DIR # Clean up the directory variable
