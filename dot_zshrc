@@ -1,29 +1,12 @@
-# Performance optimization: compile zshrc if it's newer than the compiled version
-if [[ "$HOME/.zshrc" -nt "$HOME/.zshrc.zwc" || ! -f "$HOME/.zshrc.zwc" ]]; then
-  zcompile "$HOME/.zshrc"
-fi
-
 # Source modular configuration files
 # ----------------------------------
 ZSH_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 
-# Check if the directory exists
 if [[ -d "$ZSH_CONFIG_DIR" ]]; then
-  # Loop through all .zsh files in the directory and source them
   for config_file in "$ZSH_CONFIG_DIR"/*.zsh; do
-    if [[ -f "$config_file" ]]; then
-      source "$config_file"
-    fi
+    source "$config_file"
   done
-
-  for config_file in "$ZSH_CONFIG_DIR"/*.zsh; do
-    if [[ "$config_file" -nt "${config_file}.zwc" || ! -f "${config_file}.zwc" ]]; then
-      zcompile "$config_file"
-    fi
-  done
-  unset config_file # Clean up the loop variable
-else
-  echo "Zsh config directory not found: $ZSH_CONFIG_DIR"
+  unset config_file
 fi
 
 unset ZSH_CONFIG_DIR # Clean up the directory variable
