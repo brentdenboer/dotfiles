@@ -1,0 +1,36 @@
+#!/usr/bin/env fish
+
+set -l KUBECTX_REPO "https://github.com/ahmetb/kubectx.git"
+set -l KUBECTX_DIR "{{ .chezmoi.homeDir }}/.local/share/kubectx"
+set -l BIN_DIR "{{ .chezmoi.homeDir }}/.local/bin"
+set -l FISH_COMPLETIONS_DIR "{{ .chezmoi.homeDir }}/.config/fish/completions"
+
+echo "Ensuring kubectx/kubens installation..."
+
+mkdir -p "$BIN_DIR"
+mkdir -p "$FISH_COMPLETIONS_DIR"
+
+if test -d "$KUBECTX_DIR/.git"
+    echo "Updating kubectx repository in $KUBECTX_DIR..."
+    command git -C "$KUBECTX_DIR" pull --ff-only
+else
+    echo "Cloning kubectx repository to $KUBECTX_DIR..."
+    rm -rf "$KUBECTX_DIR"
+    command git clone "$KUBECTX_REPO" "$KUBECTX_DIR"
+end
+
+if test $status -ne 0
+    echo "Error during git operation. Exiting."
+    exit 1
+end
+
+echo "Linking executables to $BIN_DIR..."
+ln -sf "$KUBECTX_DIR/kubectx" "$BIN_DIR/kubectx"
+ln -sf "$KUBECTX_DIR/kubens" "$BIN_DIR/kubens"
+
+echo "Linking fish completions to $FISH_COMPLETIONS_DIR..."
+ln -sf "$KUBECTX_DIR/completion/kubectx.fish" "$FISH_COMPLETIONS_DIR/kubectx.fish"
+ln -sf "$KUBECTX_DIR/completion/kubens.fish" "$FISH_COMPLETIONS_DIR/kubens.fish"
+
+echo "kubectx/kubens installation/update complete."
+

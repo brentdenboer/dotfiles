@@ -1,0 +1,79 @@
+#!/usr/bin/env fish
+
+set base_packages fzf kubectl helm
+
+{{ if eq .chezmoi.os "linux" -}}
+  echo "--- Linux Package Installation ---"
+  set packages_to_install $base_packages
+
+  set install_cmd ""
+  set update_cmd ""
+
+  if command -v dnf &> /dev/null
+    echo "Detected DNF package manager."
+    set install_cmd "sudo dnf install -y"
+    set update_cmd "sudo dnf check-update"
+  else if command -v apt-get &> /dev/null
+    echo "Detected APT package manager."
+    set install_cmd "sudo apt-get install -y"
+    set update_cmd "sudo apt-get update"
+  else
+    echo "Unsupported Linux package manager detected. Cannot install packages."
+    exit 1
+  end
+
+  if test -n "$install_cmd"
+    echo "Preparing to install packages: $packages_to_install"
+
+    if test -n "$update_cmd"
+      echo "Updating package database..."
+      eval $update_cmd
+      if test $status -ne 0
+          echo "Package database update failed!"
+          exit 1
+      end
+    end
+
+    echo "Installing packages..."
+    eval $install_cmd $packages_to_install
+    if test $status -ne 0
+        echo "Package installation failed!"
+        exit 1
+    else
+        echo "Linux packages installed successfully."
+    end
+  end
+
+{{ else if eq .chezmoi.os "darwin" -}}
+  echo "--- macOS Package Installation ---"
+  set packages_to_install $base_packages
+
+  if command -v brew &> /dev/null
+    echo "Detected Homebrew package manager."
+    echo "Updating Homebrew..."
+    brew update
+    if test $status -ne 0; echo "Brew update failed!"; exit 1; end
+
+    echo "Installing packages via Brew: $packages_to_install"
+
+    brew install $packages_to_install
+    if test $status -ne 0; echo "Brew install failed!"; exit 1; end
+
+    echo "Upgrading outdated Brew packages..."
+    brew upgrade
+    echo "Cleaning up old Brew formulae..."
+    brew cleanup
+
+    echo "macOS packages installed/updated successfully."
+  else
+    echo "Homebrew not found. Please install Homebrew first (https://brew.sh/)."
+    exit 1
+  end
+
+{{ else -}}
+
+  echo "Unsupported OS: {{ .chezmoi.os }}. Cannot install packages."
+
+{{ end -}}
+
+echo "--- Package installation script finished. ---"

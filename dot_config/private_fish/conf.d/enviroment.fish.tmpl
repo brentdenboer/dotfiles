@@ -1,0 +1,33 @@
+#!/usr/bin/env fish
+
+set -U fish_greeting
+
+{{ if lookPath "nvim" -}}
+set -Ux EDITOR nvim
+set -Ux VISUAL nvim
+{{ else if lookPath "vim" -}}
+set -Ux EDITOR vim
+set -Ux VISUAL vim
+{{ else -}}
+set -Ux EDITOR vi
+set -Ux VISUAL vi
+{{ end -}}
+
+{{ if lookPath "ghostty" -}}
+set -Ux TERMINAL ghostty
+{{ end -}}
+
+set -q XDG_CONFIG_HOME; or set -Ux XDG_CONFIG_HOME "{{ .chezmoi.homeDir }}/.config"
+set -q XDG_CACHE_HOME; or set -Ux XDG_CACHE_HOME "{{ .chezmoi.homeDir }}/.cache"
+set -q XDG_DATA_HOME; or set -Ux XDG_DATA_HOME "{{ .chezmoi.homeDir }}/.local/share"
+set -q XDG_STATE_HOME; or set -Ux XDG_STATE_HOME "{{ .chezmoi.homeDir }}/.local/state"
+
+set -Ux PNPM_HOME "{{ if eq .chezmoi.os "darwin" }}{{ .chezmoi.homeDir }}/Library/pnpm{{ else }}{{ .chezmoi.homeDir }}/.local/share/pnpm{{ end }}"
+
+fish_add_path "$PNPM_HOME"
+fish_add_path "{{ .chezmoi.homeDir }}/.dprint/bin"
+fish_add_path "{{ .chezmoi.homeDir }}/.local/bin"
+{{- if eq .chezmoi.os "darwin" }}
+fish_add_path /opt/homebrew/bin
+fish_add_path /opt/homebrew/sbin
+{{- end }}

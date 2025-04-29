@@ -1,7 +1,3 @@
 {
-  "recommendations": [
-    "mads-hartmann.bash-ide-vscode",
-    "timonwong.shellcheck",
-    "editorconfig.editorconfig"
-  ]
+  "recommendations": ["editorconfig.editorconfig"]
 }

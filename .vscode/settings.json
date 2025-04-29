@@ -16,30 +16,13 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
-  "[shellscript]": {
+  "[fish]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "shellcheck.ignorePatterns": {
-    "**/*.zsh": true,
-    "**/*.zshrc": true,
-    "**/zshrc": true,
-    "**/*.zprofile": true,
-    "**/zprofile": true,
-    "**/*.zlogin": true,
-    "**/zlogin": true,
-    "**/*.zlogout": true,
-    "**/zlogout": true,
-    "**/*.zshenv": true,
-    "**/zshenv": true,
-    "**/*.zsh-theme": true,
-    // custom
-    "**/*_zshrc": true
+    "editor.defaultFormatter": "bmalehorn.vscode-fish"
   },
   "files.associations": {
-    "*_zshrc": "shellscript",
-    "**/run_*": "shellscript",
-    "**/executable_*": "shellscript",
+    "**/run_*": "fish",
+    "**/executable_*": "fish",
     "*.toml.tmpl": "toml"
   },
   "cSpell.words": [
